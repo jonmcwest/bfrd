@@ -1,0 +1,563 @@
+/*==================================
+ * Tailwind Directives
+ *==================================*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*==================================
+ * Variables
+ *==================================*/
+:root {
+  /* Default theme */
+  --color-primary: #FFE81F;      /* Star Wars yellow */
+  --color-white: #FFFFFF;        /* White */
+  --color-off-white: #F2F2F2;    /* Off-white */
+  --color-black: #000000;        /* Black */
+  
+  --card-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --card-scale: 1.05;
+  --card-hover-y: -4px;
+}
+
+/*==================================
+ * Color Schemes
+ *==================================*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-opacity: 0.9;
+    --shadow-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-opacity: 0.7;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+/*==================================
+ * Accessibility
+ *==================================*/
+@media (prefers-contrast: more) {
+  :root {
+    --color-primary: #FFFF00;    
+    --color-white: #FFFFFF;      
+    --color-off-white: #FFFFFF;  
+    --color-black: #000000;      
+  }
+
+  /* Enhance text contrast */
+  .card__stat__label {
+    color: var(--color-white);
+    text-shadow: 1px 1px 2px var(--color-black);
+  }
+  
+  /* Add focus styles for keyboard navigation */
+  .card:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+/*==================================
+ * Motion Preferences
+ *==================================*/
+ @media (prefers-reduced-motion: reduce) {
+  .bg {
+    animation: none;
+    transition: none;
+  }
+
+  .card.player-card {
+    transition: none;
+  }
+
+  .card__select-indicator {
+    transition: none;
+  }
+
+  .card.opponent-card {
+    transition: none;
+  }
+
+  .opponent-card-container .card.opponent-card,
+  .card.opponent-card.flipped {
+    transition: none;
+  }
+}
+
+
+/*==================================
+ * Hover Effects
+ *==================================*/
+@media (hover: hover) {
+  .card.player-card:hover {
+    transform: translateY(var(--card-hover-y)) scale(var(--card-scale));
+    transition: transform var(--card-transition);
+  }
+  
+  .card.player-card:hover .card__image {
+    transform: scale(1.15) translateY(-2%) rotate(-3deg);
+  }
+}
+
+/*==================================
+ * Base Styles
+ *==================================*/
+:root {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--color-white);
+}
+
+body {
+  background-color: var(--color-black);
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+/*==================================
+ * Background Styles
+ *==================================*/
+.bg {
+  background-image: 
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.498) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ),
+    url('/bg.png');
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  animation: zoom 16s alternate infinite; 
+}
+
+@keyframes zoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.5);
+  }
+}
+
+/*==================================
+ * Layout Components
+ *==================================*/
+.main {
+  padding: 27px;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  width: 187px;
+  height: 80px;
+}
+
+/*==================================
+ * Title Styles
+ *==================================*/
+.title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 17px;
+}
+
+.title {
+  font-size: 28px;
+  font-family: "Orbitron-Bold", "Orbitron Bold", "Orbitron", sans-serif;
+  font-weight: 700;
+  color: var(--color-white);
+  line-height: normal;
+}
+
+/*==================================
+ * Play Area
+ *==================================*/
+.play-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 46px;
+}
+
+.opponent-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 0 0 0;
+}
+
+/*==================================
+ * Card Base Styles
+ *==================================*/
+.card {
+  border: 8px solid;
+  border-color: var(--color-off-white);
+  background-color: var(--color-black);
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.8);
+}
+
+/*==================================
+ * Card Components
+ *==================================*/
+.card__container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+}
+
+.card__select-indicator { 
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: -26px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card__select-indicator span {
+  font-size: 18px;
+  width: 130px;
+  height: 52px;
+  padding: 2px;
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.35);
+  font-family: "Orbitron-Bold", "Orbitron Bold", "Orbitron", sans-serif;
+  font-weight: 700;
+  color: var(--color-black);
+  text-align: center;
+  line-height: normal;
+}
+
+.card__stats {
+  display: flex;
+  flex-direction: column;
+}
+
+.card__stat {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card__stat__label {
+  font-size: 18px;
+  font-family: "Orbitron-Regular", "Orbitron", sans-serif;
+  color: var(--color-white);
+  text-align: left;
+  line-height: normal;
+}
+
+.card__stat__value {
+  font-size: 18px;
+  font-family: "Orbitron-Bold", "Orbitron Bold", "Orbitron", sans-serif;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.card__image-container {
+  width: 100%;
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.card__image-container::before {
+  content: "";
+  display: block;
+  background-color: var(--color-primary);
+  height: 75%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  background-image: linear-gradient(-180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.52) 100%);
+}
+
+.card__image {
+  /* width: 100%; */
+  height: 100%;
+  width: auto;
+  position: absolute;
+  z-index: 1;
+  transform: scale(1.11);
+  transform-origin: bottom center;
+  transition: transform var(--card-transition);
+}
+
+/*==================================
+ * Player Card Styles
+ *==================================*/
+.card.player-card {
+  border-color: var(--color-primary);
+  border-width: 20px;
+  border-radius: 40px;
+  min-width: 418px;
+  height: 590px;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  transition: transform 0.3s ease, filter 0.3s ease, border-color 0.3s ease;
+  margin-top: 38px;
+  margin-bottom: 12px;
+  filter: brightness(0.4);
+  cursor: pointer;
+  user-select: none;
+}
+
+.player-card.selected {
+  border-color: var(--color-black);}
+
+.player-card .card__title-container {
+  padding: 22px 0 4px 0;
+}
+
+.player-card .card__title {
+  text-transform: uppercase;
+  font-size: 22px;
+  font-family: "Orbitron-Bold", "Orbitron Bold", "Orbitron", sans-serif;
+  font-weight: 700;
+  width: 100%;
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.player-card .card__stats {
+  padding: 0 12px 24px 32px;
+}
+
+.player-card .card__select-indicator {
+  top: -36px;
+  z-index: 1;
+}
+
+.player-card.highlighted {
+  z-index: 2;
+  filter: brightness(1);
+}
+
+/* Show SELECT indicator only when card is highlighted */
+.player-card.highlighted .card__select-indicator {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*==================================
+ * Opponent Card Styles
+ *==================================*/
+.opponent-card-container {
+  perspective: 1000px;
+}
+
+.card.opponent-card {
+  width: 149px;
+  height: 210px;
+  border-radius: 20px;
+  transition: transform 0.3s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.card.opponent-card.flipped {
+  transform: rotateY(-180deg);
+}
+
+.opponent-card .card__container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.opponent-card .card__back,
+.opponent-card .card__front {
+  -webkit-backface-visibility: hidden; /* For Safari */
+  backface-visibility: hidden;
+}
+
+.opponent-card .card__back {
+  transform: rotateY(180deg);
+}
+.opponent-card .card__back,
+.opponent-card .card__front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-black);
+  border-radius: 10px;
+}
+
+.opponent-card .card__back {
+  transform: rotateY(0deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding-top: 12px;
+  width: 100%;
+  height: 100%;
+}
+
+.opponent-card .card__front {
+  transform: rotateY(180deg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.opponent-card .card__title-container {
+  padding: 8px 0 2px 0;
+}
+
+.opponent-card .card__title {
+  font-size: 18px;
+  font-family: "Orbitron-Bold", "Orbitron Bold", "Orbitron", sans-serif;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-white);
+}
+
+.opponent-card .card__image-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.opponent-card .card__image-container::before {
+  content: "";
+  display: block;
+  background-color: var(--color-white);
+  height: 70%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  background-image: linear-gradient(-180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.52) 100%);
+}
+
+.opponent-card .card__image {
+  height: 90%;
+  width: auto;
+  position: absolute;
+  z-index: 1;
+  transform: scale(1.08);
+  transform-origin: bottom center;
+}
+
+.opponent-card .question-mark {
+  width: 43px;
+  height: 49px;
+}
+
+.opponent-card .message {
+  font-size: 1rem;
+  max-width: 119px;
+  text-align: center;
+  line-height: normal;
+}
+
+/*==================================
+ * Player Styles
+ *==================================*/
+.player-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-message {
+  font-size: 18px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.listing {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  display: flex;
+  gap: 30px;
+  padding: 0 calc(50% - 209px);
+  scroll-snap-type: x mandatory;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding-bottom: 24px;
+}
+
+/* Hide scrollbar */
+.listing::-webkit-scrollbar {
+  display: none;
+}
+
+.listing {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+/*==================================
+ * Loading Placeholder
+ *==================================*/
+.loading-placeholder {
+  background: #2a2a2a;
+  animation: loading-pulse 1.5s ease-in-out infinite;
+}
+
+.card.loading .card__title-container .card__title {
+  height: 24px;
+  width: 80%;
+  border-radius: 4px;
+}
+
+.card.loading .card__stat__value {
+  height: 16px;
+  width: 60%;
+  border-radius: 4px;
+}
+
+.card.loading .card__image-container {
+  background: #2a2a2a;
+  min-height: 200px;
+}
+
+@keyframes loading-pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
